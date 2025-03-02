@@ -32,34 +32,37 @@ int main() {
     char command[50];
     Vector* vector1 = NULL;
     Vector* vector2 = NULL;
-    DataType type1, type2;
+    struct FieldInfo* type1;
+    struct FieldInfo* type2;
     
     while (fscanf(inFile, "%s", command) != EOF) {
         if (strcmp(command, "CREATE1") == 0) {
             char typeStr[10];
             fscanf(inFile, "%s", typeStr);
-            if (strcmp(typeStr, "INT") == 0) type1 = INT;
-            else if (strcmp(typeStr, "DOUBLE") == 0) type1 = DOUBLE;
-            else if (strcmp(typeStr, "FLOAT") == 0) type1 = FLOAT;
+            if (strcmp(typeStr, "INT") == 0) type1 = getIntegerFieldInfo();
+            else if (strcmp(typeStr, "DOUBLE") == 0) type1 = getDoubleFieldInfo();
+            else if (strcmp(typeStr, "FLOAT") == 0) type1 = getFloatFieldInfo();
             else {
                 logMessage("Error: Invalid data type.");
                 continue;
             }
             vector1 = createVector(type1);
             logMessage("Vector 1 created.");
-        } else if (strcmp(command, "CREATE2") == 0) {
+        } 
+        else if (strcmp(command, "CREATE2") == 0) {
             char typeStr[10];
             fscanf(inFile, "%s", typeStr);
-            if (strcmp(typeStr, "INT") == 0) type2 = INT;
-            else if (strcmp(typeStr, "DOUBLE") == 0) type2 = DOUBLE;
-            else if (strcmp(typeStr, "FLOAT") == 0) type2 = FLOAT;
+            if (strcmp(typeStr, "INT") == 0) type2 = getIntegerFieldInfo();
+            else if (strcmp(typeStr, "DOUBLE") == 0) type2 = getDoubleFieldInfo();
+            else if (strcmp(typeStr, "FLOAT") == 0) type2 = getFloatFieldInfo();
             else {
                 logMessage("Error: Invalid data type.");
                 continue;
             }
             vector2 = createVector(type2);
             logMessage("Vector 2 created.");
-        } else if (strcmp(command, "ADD1") == 0) {
+        } 
+        else if (strcmp(command, "ADD1") == 0) {
             if (!vector1) {
                 logMessage("Error: Vector 1 not created.");
                 continue;
@@ -67,10 +70,10 @@ int main() {
             
             char typeStr[10];
             fscanf(inFile, "%s", typeStr);
-            DataType inputType;
-            if (strcmp(typeStr, "INT") == 0) inputType = INT;
-            else if (strcmp(typeStr, "DOUBLE") == 0) inputType = DOUBLE;
-            else if (strcmp(typeStr, "FLOAT") == 0) inputType = FLOAT;
+            struct FieldInfo* inputType;
+            if (strcmp(typeStr, "INT") == 0) inputType = getIntegerFieldInfo();
+            else if (strcmp(typeStr, "DOUBLE") == 0) inputType = getDoubleFieldInfo();
+            else if (strcmp(typeStr, "FLOAT") == 0) inputType = getFloatFieldInfo();
             else {
                 logMessage("Error: Invalid data type.");
                 continue;
@@ -81,21 +84,22 @@ int main() {
                 continue;
             }
             
-            if (vector1->type == INT) {
+            if (vector1->type == getIntegerFieldInfo()) {
                 int value;
                 fscanf(inFile, "%d", &value);
-                addElement(vector1, &value, INT);
-            } else if (vector1->type == DOUBLE) {
+                addElement(vector1, &value, getIntegerFieldInfo());
+            } else if (vector1->type == getDoubleFieldInfo()) {
                 double value;
                 fscanf(inFile, "%lf", &value);
-                addElement(vector1, &value, DOUBLE);
-            } else if (vector1->type == FLOAT) {
+                addElement(vector1, &value, getDoubleFieldInfo());
+            } else if (vector1->type == getFloatFieldInfo()) {
                 float value;
                 fscanf(inFile, "%f", &value);
-                addElement(vector1, &value, FLOAT);
+                addElement(vector1, &value, getFloatFieldInfo());
             }
             logMessage("Element added to Vector 1.");
-        } else if (strcmp(command, "ADD2") == 0) {
+        } 
+        else if (strcmp(command, "ADD2") == 0) {
             if (!vector2) {
                 logMessage("Error: Vector 2 not created.");
                 continue;
@@ -103,10 +107,10 @@ int main() {
             
             char typeStr[10];
             fscanf(inFile, "%s", typeStr);
-            DataType inputType;
-            if (strcmp(typeStr, "INT") == 0) inputType = INT;
-            else if (strcmp(typeStr, "DOUBLE") == 0) inputType = DOUBLE;
-            else if (strcmp(typeStr, "FLOAT") == 0) inputType = FLOAT;
+            struct FieldInfo* inputType;
+            if (strcmp(typeStr, "INT") == 0) inputType = getIntegerFieldInfo();
+            else if (strcmp(typeStr, "DOUBLE") == 0) inputType = getDoubleFieldInfo();
+            else if (strcmp(typeStr, "FLOAT") == 0) inputType = getFloatFieldInfo();
             else {
                 logMessage("Error: Invalid data type.");
                 continue;
@@ -117,21 +121,22 @@ int main() {
                 continue;
             }
             
-            if (vector2->type == INT) {
+            if (vector2->type == getIntegerFieldInfo()) {
                 int value;
                 fscanf(inFile, "%d", &value);
-                addElement(vector2, &value, INT);
-            } else if (vector2->type == DOUBLE) {
+                addElement(vector2, &value, getIntegerFieldInfo());
+            } else if (vector2->type == getDoubleFieldInfo()) {
                 double value;
                 fscanf(inFile, "%lf", &value);
-                addElement(vector2, &value, DOUBLE);
-            } else if (vector2->type == FLOAT) {
+                addElement(vector2, &value, getDoubleFieldInfo());
+            } else if (vector2->type == getFloatFieldInfo()) {
                 float value;
                 fscanf(inFile, "%f", &value);
-                addElement(vector2, &value, FLOAT);
+                addElement(vector2, &value, getFloatFieldInfo());
             }
             logMessage("Element added to Vector 2.");
-        } else if (strcmp(command, "ADD_VECTORS") == 0) {
+        } 
+        else if (strcmp(command, "ADD_VECTORS") == 0) {
             if (!vector1 || !vector2) {
                 logMessage("Error: One or both vectors not created.");
                 continue;
@@ -149,7 +154,8 @@ int main() {
             } else {
                 logMessage("Error: Vector addition failed.");
             }
-        } else if (strcmp(command, "DELETE") == 0) {
+        } 
+        else if (strcmp(command, "DELETE") == 0) {
             if (vector1) {
                 deleteVector(vector1);
                 vector1 = NULL;
@@ -160,7 +166,8 @@ int main() {
                 vector2 = NULL;
                 logMessage("Vector 2 deleted.");
             }
-        } else if (strcmp(command, "SCALAR_PRODUCT") == 0) {
+        } 
+        else if (strcmp(command, "SCALAR_PRODUCT") == 0) {
             if (!vector1 || !vector2) {
                 logMessage("Error: One or both vectors not created.");
                 continue;
@@ -175,7 +182,8 @@ int main() {
             }
             scalarProduct(vector1, vector2);
             logMessage("Scalar product was made successfully.");
-        } else if (strcmp(command, "VECTOR_PRODUCT") == 0) {
+        } 
+        else if (strcmp(command, "VECTOR_PRODUCT") == 0) {
             if (!vector1 || !vector2) {
                 logMessage("Error: One or both vectors not created.");
                 continue;
@@ -201,12 +209,12 @@ int main() {
     }
     
     
-    if (vector1) {
-        deleteVector(vector1);
-    }
-    if (vector2) {
-        deleteVector(vector2);
-    }
-    fclose(inFile);
-    return 0;
+if (vector1) {
+    deleteVector(vector1);
+}
+if (vector2) {
+    deleteVector(vector2);
+}
+fclose(inFile);
+return 0;
 }
