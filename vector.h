@@ -1,23 +1,18 @@
 #pragma once
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum {
-    INT,
-    DOUBLE,
-    FLOAT
-} DataType;
 
 typedef struct Vector_Nd{
-    DataType type;
+    struct FieldInfo* type;
     void* data;
     size_t size_of_vector;
-    size_t element_size;
 } Vector;
 
-Vector* createVector(DataType type);
+Vector* createVector(struct FieldInfo* type);
 
-void addElement(Vector* vector, void* element, DataType type);
+void addElement(Vector* vector, void* element, struct FieldInfo* type);
 
 void removeElement(Vector* vector, size_t index);
 
@@ -33,7 +28,7 @@ Vector* addVectors(Vector* vector1, Vector* vector2);
 
 void scalarProduct(Vector* vector1, Vector* vector2);
 
-Vector* multiplyVector(Vector* vector1, void* value, DataType type);
+Vector* multiplyVector(Vector* vector1, void* value, struct FieldInfo* type);
 
 Vector* vectorProduct(Vector* vector1, Vector* vector2);
 
