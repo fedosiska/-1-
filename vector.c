@@ -52,7 +52,7 @@ void* getElement(Vector* vector, size_t index){
         printf("Error while getting element: index out of range\n");
         exit(1);
     }
-    return vector->data + vector->type->element_size * index;
+    return (char*)vector->data + vector->type->element_size * index;
 }
 
 void deleteVector(Vector* vector){
@@ -106,11 +106,21 @@ void scalarProduct(Vector* vector1, Vector* vector2){
         printf("Error in scalarProduct: Vectors have different sizes\n");
         exit(1);
     }
-    double scalarresult = 0.0;
-    for(size_t i =0; i<vector1->size_of_vector;i++){
-        scalarresult += *(double*)product(vector1->type, getElement(vector1, i), getElement(vector2,i));
+    void* scalarresult = Zero(vector1->type);
+    for(size_t i =0; i<vector1->size_of_vector;++i){
+        scalarresult = sum(vector1->type, product(vector1->type, getElement(vector1, i), getElement(vector2,i)), scalarresult);
     }
-    printf("Scalar product: %.2f\n", scalarresult);
+    printf("Scalar product result: ");
+    if (vector1->type == getIntegerFieldInfo()){
+        printf("%d\n", *(int*)scalarresult);
+    }
+    else if (vector1->type == getDoubleFieldInfo()){
+        printf("%f\n", *(double*)scalarresult);
+    }
+    else if (vector1->type == getFloatFieldInfo()){
+        printf("%f\n", *(float*)scalarresult);
+    }
+    free(scalarresult);
 }
 
 Vector* multiplyVector(Vector* vector, void* value, struct FieldInfo* type){
