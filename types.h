@@ -49,6 +49,11 @@ my_float_t* floatSub(my_float_t* arg1, my_float_t* arg2);
 
 my_float_t* floatProduct(my_float_t* arg1, my_float_t* arg2);
 
+void* Zero(struct FieldInfo* type);
+
 void* sum(struct FieldInfo* type, void* arg1, void* arg2);
 
+void* sub(struct FieldInfo* type, void* arg1, void* arg2);
+
 void* product(struct FieldInfo* type, void* arg1, void* arg2);
+
