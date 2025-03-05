@@ -28,7 +28,7 @@ int main() {
         return 1;
     }
     fclose(outFile);
-    
+
     char command[50];
     Vector* vector1 = NULL;
     Vector* vector2 = NULL;
@@ -136,6 +136,38 @@ int main() {
             }
             logMessage("Element added to Vector 2.");
         } 
+        else if (strcmp(command, "REMOVE1") == 0){
+            if (!vector1) {
+                logMessage("Error: Vector 1 not created.");
+                continue;
+            }
+            
+            int index;
+            fscanf(inFile, "%d", &index);
+            if (index < 0 || index >= vector1->size_of_vector) {
+                logMessage("Error: Invalid index.");
+                continue;
+            }
+            
+            removeElement(vector1, index);
+            logMessage("Element removed from Vector 1.");
+        }
+        else if (strcmp(command, "REMOVE2") == 0){
+            if (!vector2) {
+                logMessage("Error: Vector 2 not created.");
+                continue;
+            }
+            
+            int index;
+            fscanf(inFile, "%d", &index);
+            if (index < 0 || index >= vector2->size_of_vector) {
+                logMessage("Error: Invalid index.");
+                continue;
+            }
+            
+            removeElement(vector2, index);
+            logMessage("Element removed from Vector 2.");
+        }
         else if (strcmp(command, "ADD_VECTORS") == 0) {
             if (!vector1 || !vector2) {
                 logMessage("Error: One or both vectors not created.");
@@ -144,6 +176,11 @@ int main() {
             
             if (vector1->type != vector2->type) {
                 logMessage("Error: Cannot add vectors of different types.");
+                continue;
+            }
+
+            if (vector1->size_of_vector != vector2->size_of_vector) {
+                logMessage("Error: Vectors must have the same size for addition.");
                 continue;
             }
             
@@ -181,6 +218,7 @@ int main() {
                 continue;
             }
             scalarProduct(vector1, vector2);
+            
             logMessage("Scalar product was made successfully.");
         } 
         else if (strcmp(command, "VECTOR_PRODUCT") == 0) {
@@ -216,5 +254,6 @@ if (vector2) {
     deleteVector(vector2);
 }
 fclose(inFile);
+
 return 0;
 }
