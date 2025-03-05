@@ -83,8 +83,7 @@ my_double_t* double_(double value){
     return assign;
 }
 
-my_double_t *doubleSum(my_double_t *arg1, my_double_t *arg2)
-{
+my_double_t *doubleSum(my_double_t *arg1, my_double_t *arg2){
     my_double_t* dsum = malloc(sizeof(my_double_t));
     if (!dsum){
         printf("Error: reallocating memory\n");
@@ -161,6 +160,18 @@ void freeFieldInfo(struct FieldInfo* fieldInfo){
     }
 }
 
+void* Zero(struct FieldInfo* type){
+    void* z = malloc(sizeof(type->element_size));
+    if (!z){
+        printf("Error: reallocating memory\n");
+        exit(1);
+    }
+    for (size_t i = 0 ; i < type->element_size; i++)
+    {
+        *((char *) z + i) = 0;
+    }
+    return z;
+}
 void* sum(struct FieldInfo* type, void* arg1, void* arg2){
     void* new;
     if (type == getIntegerFieldInfo()) {
