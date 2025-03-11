@@ -12,15 +12,11 @@ typedef struct Vector_Nd{
 
 Vector* createVector(struct FieldInfo* type);
 
-void addElement(Vector* vector, void* element, struct FieldInfo* type);
+void addElement(Vector* vector, void* element);
 
 void removeElement(Vector* vector, size_t index);
 
 void* getElement(Vector* vector, size_t index);
-
-void printVector(Vector* vector);
-
-void printElement(Vector* vector, size_t index);
 
 void deleteVector(Vector* vector);
 
@@ -32,4 +28,4 @@ Vector* multiplyVector(Vector* vector1, void* value, struct FieldInfo* type);
 
 Vector* vectorProduct(Vector* vector1, Vector* vector2);
 
-void distVector(Vector* vector);
+//void distVector(Vector* vector);
