@@ -85,17 +85,20 @@ int main() {
             }
             
             if (vector1->type == getIntegerFieldInfo()) {
-                int value;
-                fscanf(inFile, "%d", &value);
-                addElement(vector1, &value, getIntegerFieldInfo());
+                int int_value;
+                fscanf(inFile, "%d", &int_value);
+                integer_t* value = integer(int_value);
+                addElement(vector1, value);
             } else if (vector1->type == getDoubleFieldInfo()) {
-                double value;
-                fscanf(inFile, "%lf", &value);
-                addElement(vector1, &value, getDoubleFieldInfo());
+                double double_value;
+                fscanf(inFile, "%lf", &double_value);
+                my_double_t* value = double_(double_value);
+                addElement(vector1, value);
             } else if (vector1->type == getFloatFieldInfo()) {
-                float value;
-                fscanf(inFile, "%f", &value);
-                addElement(vector1, &value, getFloatFieldInfo());
+                float float_value;
+                fscanf(inFile, "%f", &float_value);
+                my_float_t* value = float_(float_value);
+                addElement(vector1, value);
             }
             logMessage("Element added to Vector 1.");
         } 
@@ -122,17 +125,20 @@ int main() {
             }
             
             if (vector2->type == getIntegerFieldInfo()) {
-                int value;
-                fscanf(inFile, "%d", &value);
-                addElement(vector2, &value, getIntegerFieldInfo());
+                int int_value;
+                fscanf(inFile, "%d", &int_value);
+                integer_t* value = integer(int_value);
+                addElement(vector2, value);
             } else if (vector2->type == getDoubleFieldInfo()) {
-                double value;
-                fscanf(inFile, "%lf", &value);
-                addElement(vector2, &value, getDoubleFieldInfo());
+                double double_value;
+                fscanf(inFile, "%lf", &double_value);
+                my_double_t* value = double_(double_value);
+                addElement(vector2, value);
             } else if (vector2->type == getFloatFieldInfo()) {
-                float value;
-                fscanf(inFile, "%f", &value);
-                addElement(vector2, &value, getFloatFieldInfo());
+                float float_value;
+                fscanf(inFile, "%f", &float_value);
+                my_float_t* value = float_(float_value);
+                addElement(vector2, value);
             }
             logMessage("Element added to Vector 2.");
         } 
@@ -255,5 +261,10 @@ if (vector2) {
 }
 fclose(inFile);
 
+Vector* vector3 = createVector(getFloatFieldInfo());
+
+addElement(vector3, float_(1.5));
+
+toString(vector3);
 return 0;
 }
