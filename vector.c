@@ -14,11 +14,7 @@ Vector* createVector(struct FieldInfo* type){
     return vector;
 }
 
-void addElement(Vector* vector, void* element, struct FieldInfo* type){
-    if (vector->type != type){
-        printf("Error while adding element: element has wrong type");
-        exit(1);
-    }
+void addElement(Vector* vector, void* element){
     void* new_data = realloc(vector->data, vector->type->element_size * (vector->size_of_vector + 1));
     if(new_data == NULL){
         printf("Error: reallocating memory\n");
@@ -56,26 +52,22 @@ void* getElement(Vector* vector, size_t index){
 }
 
 void deleteVector(Vector* vector){
+    if (!vector->data){
+        printf("Error: Vector cannot be deleted\n");
+        exit(1);
+    }
     free(vector->data);
     free(vector);
     printf("Vector deleted\n");
 }
 
-void printVector(Vector* vector){
-    printf("Your vector ");
-    for(size_t i = 0; i < vector->size_of_vector; i++){
-        if (vector->type == getIntegerFieldInfo()){
-            printf("%d ", *(integer_t*)getElement(vector, i));
-        }
-        else if (vector->type == getDoubleFieldInfo()){
-            printf("%f ", *(my_double_t*)getElement(vector, i));
-        }
-        else if (vector->type == getFloatFieldInfo()){
-            printf("%f ", *(my_float_t*)getElement(vector, i));
-        }
-
-    printf("\n");
+void toString(Vector* vector){
+    printf("Your vector: [");
+    for (size_t i = 0; i < vector->size_of_vector; i++) {
+        vector->type->toString(getElement(vector, i));
+        if(i!= vector->size_of_vector-1) printf(", ");
     }
+    printf("]\n");
 }
 
 Vector* addVectors(Vector* vector1, Vector* vector2){
@@ -91,7 +83,7 @@ Vector* addVectors(Vector* vector1, Vector* vector2){
     for(size_t i = 0; i < vector1->size_of_vector; i++){
         void* newElement;
         newElement = sum(vector1->type, getElement(vector1, i), getElement(vector2, i));
-        addElement(result, newElement, vector1->type);
+        addElement(result, newElement);
         free(newElement);
     }
     return result;
@@ -111,15 +103,7 @@ void scalarProduct(Vector* vector1, Vector* vector2){
         scalarresult = sum(vector1->type, product(vector1->type, getElement(vector1, i), getElement(vector2,i)), scalarresult);
     }
     printf("Scalar product result: ");
-    if (vector1->type == getIntegerFieldInfo()){
-        printf("%d\n", *(int*)scalarresult);
-    }
-    else if (vector1->type == getDoubleFieldInfo()){
-        printf("%f\n", *(double*)scalarresult);
-    }
-    else if (vector1->type == getFloatFieldInfo()){
-        printf("%f\n", *(float*)scalarresult);
-    }
+    vector1->type->toString(scalarresult);
     free(scalarresult);
 }
 
@@ -129,38 +113,12 @@ Vector* multiplyVector(Vector* vector, void* value, struct FieldInfo* type){
         exit(1);
     }
     Vector* result = createVector(vector->type);
-    for(int i = 0; i < vector->size_of_vector; i++){
-        if(vector->type == getIntegerFieldInfo()){
-            int multiplied_value_int = *(int*)getElement(vector, i) * *(int*)value;
-            addElement(result, &multiplied_value_int, getIntegerFieldInfo());
-        }
-        else if(vector->type == getDoubleFieldInfo()){
-            double multiplied_value_double = *(double*)getElement(vector, i) * *(double*)value;
-            addElement(result, &multiplied_value_double, getDoubleFieldInfo());
-        }
-        else if(vector->type == getFloatFieldInfo()){
-            float multiplied_value = *(float*)getElement(vector, i) * *(float*)value;
-            addElement(result, &multiplied_value, getFloatFieldInfo());
-        }
+    for (size_t i = 0; i < vector->size_of_vector; i++) {
+        void* multiplied_value = product(vector->type, getElement(vector, i), value);
+        addElement(result, multiplied_value);
+        free(multiplied_value);
     }
     return result;
-}
-
-void distVector(Vector* vector){
-    double dst_result = 0;
-    for(int i = 0; i < vector->size_of_vector; i++){
-        if(vector->type== getIntegerFieldInfo()){
-            dst_result += pow(*(int*)getElement(vector, i), 2);
-        }
-        else if(vector->type == getDoubleFieldInfo()){
-            dst_result += pow(*(double*)getElement(vector, i), 2);
-        }
-        else if(vector->type == getFloatFieldInfo()){
-            dst_result += pow(*(float*)getElement(vector, i), 2);
-        }
-    }
-    double length = sqrt(dst_result);
-    printf("Length: %.2f\n", length);
 }
 
 Vector* vectorProduct(Vector* vector1, Vector* vector2){
@@ -179,9 +137,9 @@ Vector* vectorProduct(Vector* vector1, Vector* vector2){
     coord_x = sub(vector1->type, product(vector1->type,getElement(vector1, 1),getElement(vector2, 2)), product(vector2->type, getElement(vector1,2), getElement(vector2,1)));
     coord_y = sub(vector1->type, product(vector1->type,getElement(vector1,2), getElement(vector2,0)), product(vector2->type, getElement(vector1,0), getElement(vector2,2)));
     coord_z = sub(vector1->type, product(vector1->type,getElement(vector1,0), getElement(vector2,1)), product(vector2->type, getElement(vector1,1), getElement(vector2,0)));
-    addElement(result, coord_x, vector1->type);
-    addElement(result, coord_y, vector1->type);
-    addElement(result, coord_z, vector1->type);
+    addElement(result, coord_x);
+    addElement(result, coord_y);
+    addElement(result, coord_z);
     free(coord_x);
     free(coord_y);
     free(coord_z);
