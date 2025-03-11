@@ -7,10 +7,29 @@ struct FieldInfo* INT_FIELD_INFO = NULL;
 struct FieldInfo* DOULE_FIELD_INFO = NULL;
 struct FieldInfo* FLOAT_FIELD_INFO = NULL;
 
+void int_to_string(void* element){
+    char* str = malloc(sizeof(char) * 10);
+    sprintf(str, "%d", ((integer_t*)element)->value);
+    printf("%s ", str);
+}
+
+void double_to_string(void* element){
+    char* str = malloc(sizeof(char) * 20);
+    sprintf(str, "%lf", ((my_double_t*)element)->value);
+    printf("%s ", str);
+}
+
+void float_to_string(void* element){
+    char* str = malloc(sizeof(char) * 20);
+    sprintf(str, "%f", ((my_float_t*)element)->value);
+    printf("%s ", str);
+}
+
 struct FieldInfo* getIntegerFieldInfo(){
     if (INT_FIELD_INFO == NULL) {
         INT_FIELD_INFO = malloc(sizeof(struct FieldInfo));
         INT_FIELD_INFO->element_size = sizeof(struct Integer);
+        INT_FIELD_INFO->toString = int_to_string;
     }
     return INT_FIELD_INFO;
 }
@@ -19,6 +38,7 @@ struct FieldInfo* getDoubleFieldInfo(){
     if (DOULE_FIELD_INFO == NULL) {
         DOULE_FIELD_INFO = malloc(sizeof(struct FieldInfo));
         DOULE_FIELD_INFO->element_size = sizeof(struct MyDouble);
+        DOULE_FIELD_INFO->toString = double_to_string;
     }
     return DOULE_FIELD_INFO;
 }
@@ -27,6 +47,7 @@ struct FieldInfo* getFloatFieldInfo(){
     if (FLOAT_FIELD_INFO == NULL) {
         FLOAT_FIELD_INFO = malloc(sizeof(struct FieldInfo));
         FLOAT_FIELD_INFO->element_size = sizeof(struct MyFloat);
+        FLOAT_FIELD_INFO->toString = float_to_string;
     }
     return FLOAT_FIELD_INFO;
 }
@@ -168,7 +189,7 @@ void* Zero(struct FieldInfo* type){
     }
     for (size_t i = 0 ; i < type->element_size; i++)
     {
-        *((char *) z + i) = 0;
+        *((char*)z + i) = 0;
     }
     return z;
 }
