@@ -4,6 +4,7 @@
 
 struct FieldInfo {
     size_t element_size;
+    void (*toString)(void* element);
 };
 
 struct FieldInfo* getIntegerFieldInfo();
@@ -56,4 +57,10 @@ void* sum(struct FieldInfo* type, void* arg1, void* arg2);
 void* sub(struct FieldInfo* type, void* arg1, void* arg2);
 
 void* product(struct FieldInfo* type, void* arg1, void* arg2);
+
+void int_to_string(void* element);
+
+void double_to_string(void* element);
+
+void float_to_string(void* element);
 
